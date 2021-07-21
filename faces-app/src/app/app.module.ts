@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { NbEvaIconsModule } from '@nebular/eva-icons';
-import { NbButtonModule, NbIconModule, NbLayoutModule, NbThemeModule } from '@nebular/theme';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NbThemeModule, NbLayoutModule, NbButtonModule, NbIconModule } from '@nebular/theme';
+import { NbEvaIconsModule } from '@nebular/eva-icons';
 
 @NgModule({
   declarations: [
@@ -13,11 +14,12 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
+    NbThemeModule.forRoot({ name: 'cosmic' }),
     NbLayoutModule,
-    NbButtonModule,
-    NbIconModule,
     NbEvaIconsModule,
-    NbThemeModule
+    NbButtonModule,
+    NbIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]
