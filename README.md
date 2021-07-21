@@ -1,4 +1,4 @@
-# db2-proyect3
+# db2-project3
 ## Integrantes
 - Sebastian Knell Noriega 
 - Massimo Imparato Conetta
