@@ -10,7 +10,7 @@ import { UploadService } from './upload.service';
 export class AppComponent {
   title = 'faces-app';
   imgSrc: string;
-  processingImage = true;
+  processingImage = false;
 
   uploadForm = this.fb.group({
     file: new FormControl(null, [Validators.required]),

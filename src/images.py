@@ -7,4 +7,3 @@ def getEncoding(file):
     encoding = frec.face_encodings(file)[0]
     # print(encoding)
     return encoding
-
