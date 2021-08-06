@@ -1,12 +1,14 @@
-from flask import Flask, Response, request, redirect
+from flask import Flask, Response, request
 from flask import request
 from flask_cors import CORS
+import images
+import base64, json
+
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+SAVE_FOLDER = './data/saved'
 
 app = Flask(__name__)
 cors = CORS(app)
-
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
-
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -15,17 +17,16 @@ def allowed_file(filename):
 
 @app.route('/upload', methods=['POST'])
 def upload_image():
-    if 'file' not in request.files:
-        return redirect(request.url)
-
-    file = request.files['file']
-
-    if file.filename == '':
-        return redirect(request.url)
-
-    if file and allowed_file(file.filename):
-        return processImage(file)
+    data = json.loads(request.data)
+    if 'file' not in data:
+        return 'File not found'
+    imageParts = data['file'].split(';base64,')
+    file = base64.b64decode(imageParts[1])
+    with open('{}/uploaded-file.jpeg'.format(SAVE_FOLDER), 'wb+') as f:
+        f.write(file)
+    return 'Ok'
 
 
 def processImage(img):
-    return 'processing image'
+    encoding = images.getEncoding(img)
+    print(encoding)

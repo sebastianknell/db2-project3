@@ -4,10 +4,12 @@
   </nb-layout-header>
 
   <nb-layout-column>
-    <button nbButton status="warning">
-      <nb-icon icon="upload"></nb-icon>
-      Upload image
-    </button>
+
+    <form [formGroup]="uploadForm" novalidate (ngSubmit)="upload()">
+      <input type="file" (change)="onImageChange($event)"/>
+      <button type="submit" >Submit</button>
+    </form>
+
   </nb-layout-column>
 
   <nb-layout-footer fixed>
