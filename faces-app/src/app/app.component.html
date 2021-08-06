@@ -5,10 +5,23 @@
 
   <nb-layout-column>
 
-    <form [formGroup]="uploadForm" novalidate (ngSubmit)="upload()">
-      <input type="file" (change)="onImageChange($event)"/>
-      <button type="submit" >Submit</button>
-    </form>
+    <div class="container">
+
+      <form [formGroup]="uploadForm" novalidate (ngSubmit)="upload()">
+        <input type="file" (change)="onImageChange($event)"/>
+        <button [nbSpinner]="processingImage" nbSpinnerStatus="warning" nbButton status="warning" type="submit" [disabled]="processingImage">
+          <nb-icon icon="cloud-upload-outline"></nb-icon>
+          Process Image
+        </button>
+      </form>
+      
+      <div class="images">
+        <img [src]="imgSrc" *ngIf="imgSrc">
+        <img [src]="imgSrc" *ngIf="imgSrc">
+      </div>
+
+
+    </div>
 
   </nb-layout-column>
 

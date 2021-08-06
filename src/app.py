@@ -1,3 +1,4 @@
+import re
 from flask import Flask, Response, request
 from flask import request
 from flask_cors import CORS
@@ -20,10 +21,16 @@ def upload_image():
     data = json.loads(request.data)
     if 'file' not in data:
         return 'File not found'
+    if data['file'] == None:
+        return 'Invalid file'
     imageParts = data['file'].split(';base64,')
     file = base64.b64decode(imageParts[1])
     with open('{}/uploaded-file.jpeg'.format(SAVE_FOLDER), 'wb+') as f:
         f.write(file)
+
+    # Process image
+
+
     return 'Ok'
 
 

@@ -9,8 +9,8 @@ import { UploadService } from './upload.service';
 })
 export class AppComponent {
   title = 'faces-app';
-  file: File
-  imgFile: string
+  imgSrc: string;
+  processingImage = true;
 
   uploadForm = this.fb.group({
     file: new FormControl(null, [Validators.required]),
@@ -30,24 +30,24 @@ export class AppComponent {
       reader.readAsDataURL(file);
 
       reader.onload = () => {
+        this.imgSrc = reader.result as string
         this.uploadForm.patchValue({
           file: reader.result
         });
-
-        // need to run CD since file load runs outside of zone
-        // this.cd.markForCheck();
       };
     }
   }
 
   upload() {
-    console.log(this.uploadForm.value)
+    this.processingImage = true;
     this.uploadService.uploadImage(this.uploadForm.value).subscribe(
       (res) => {
-        console.log(res)
+        console.log(res);
+        this.processingImage = false;
       },
       (err) => {
-        console.log(err)
+        this.processingImage = false;
+        console.log(err);
       })
   }
 }
