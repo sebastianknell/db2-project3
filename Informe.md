@@ -35,7 +35,18 @@ El objetivo de este proyecto fue ...
 
 ## Análisis y experimentación
 
+Tiempo | KNN-Rtree | KNN-Secuencial
+------------ | ------------- | -------------
+N=100 | aaa | aaa
+N=200 | aaa | aaa
+N=400 | aaa | aaa
+N=800 | aaa | aaa
+N=1600 | aaa | aaa
+N=3200 | aaa | aaa
+N=6400 | aaa | aaa
+N=12800 | aaa | aaa
 
+Valor de K = 8
 
 ### Aplicación web
 Para visualizar los resultados implementamos una pequeña aplicación web usando [Flask](https://flask.palletsprojects.com/en/2.0.x/#) para el servidor y [Angular](https://angular.io/) para el front. A continuación se muestra la interfaz.
