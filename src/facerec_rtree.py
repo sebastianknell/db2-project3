@@ -9,7 +9,7 @@ def image_indexing(rtree_name, n_images):
   from rtree import index
 
   # Image collection folder path
-  path = "src\Test"
+  path = "./data/faces"
   dirList = os.listdir(path)
 
   # Rtree index properties
@@ -49,7 +49,7 @@ def image_indexing(rtree_name, n_images):
         for coord in face:
           tempCoords.append(coord)
 
-        format = {"path": folderPath, "name": filename};
+        format = {"path": folderPath, "name": filename}
 
         rtreeIndex.insert(index, tempCoords, format)
         imagesList.append((index, imagePath))
@@ -131,16 +131,12 @@ def KNNRtree(k, query, n):
     
     return rtreeIndex.nearest(coordinates=queryList, num_results=k, objects='raw')
 
-result = KNNRtree(2, "foto1.jpg", 4)
-print(list(result))
+# result = KNNRtree(2, "foto1.jpg", 4)
+# print(list(result))
 
-
-
-
-
-# NImagenes = 4
+# NImagenes = 100
 # path = "index"
 # rtreeName = path + 'rtreeFile' + str(NImagenes)
 
-#FacesRtree = image_indexing(rtreeName, NImagenes)
-#print(KNNSequential(4,"foto1.jpg"))
+# FacesRtree = image_indexing(rtreeName, NImagenes)
+# print(KNNSequential(4,"foto1.jpg"))
