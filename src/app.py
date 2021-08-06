@@ -34,6 +34,8 @@ def upload_image():
     # Process image
     result = list(KNNRtree(2, filename, 2000))
     name = result[0]['name']
+    nameParts = name.split('_')
+    name = nameParts[0] + ' ' + nameParts[1]
     msg = {'name': name}
     return Response(json.dumps(msg), 200)
 
