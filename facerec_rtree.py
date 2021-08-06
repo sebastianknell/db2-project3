@@ -9,7 +9,7 @@ def image_indexing(rtree_name, n_images):
   from rtree import index
 
   # Image collection folder path
-  path = "src\Test"
+  path = "src/data"
   dirList = os.listdir(path)
 
   # Rtree index properties
@@ -25,12 +25,12 @@ def image_indexing(rtree_name, n_images):
 
   # Iterate over all person folders in collection
   for filePath in dirList:
-    folderPath = path + "/" + filePath
+    folderPath = path + '/' + filePath
     imgList = os.listdir(folderPath)
     
     # Iterate over all images inside folder
-    for filename in imgList: 
-      imagePath = folderPath + "/" + filename
+    for file in imgList: 
+      imagePath = folderPath + "/" + file
       img = fr.load_image_file(imagePath)
 
     # Get encodings for all faces in current image
@@ -49,7 +49,7 @@ def image_indexing(rtree_name, n_images):
         for coord in face:
           tempCoords.append(coord)
 
-        format = {"path": folderPath, "name": filename};
+        format = {"path": folderPath, "name": file};
 
         rtreeIndex.insert(index, tempCoords, format)
         imagesList.append((index, imagePath))
@@ -78,7 +78,7 @@ def encode(unencodedQuery):
     return fr.face_encodings(image)[0]
 
 def encodeRtree(unencoded):
-    path = 'src/Test'
+    path = 'src/data'
     image = fr.load_image_file(path + '/' + unencoded)
     return fr.face_encodings(image)[0]
 
@@ -120,9 +120,11 @@ def KNNRtree(k, query, n):
     rtree = path + 'rtreeFile' + str(n)
 
     encodedQuery = encodeRtree(query)
+
     prop = index.Property()
     prop.dimension = 128
     prop.buffering_capacity = 10
+    
     rtreeIndex = index.Rtree(rtree, properties=prop)
     queryList = list(encodedQuery)
 
@@ -131,16 +133,20 @@ def KNNRtree(k, query, n):
     
     return rtreeIndex.nearest(coordinates=queryList, num_results=k, objects='raw')
 
-result = KNNRtree(2, "foto1.jpg", 4)
-print(list(result))
+# result = KNNRtree(2, "foto1.jpg", 4)
+# print(list(result))
 
 
 
 
 
-# NImagenes = 4
-# path = "index"
-# rtreeName = path + 'rtreeFile' + str(NImagenes)
-
-#FacesRtree = image_indexing(rtreeName, NImagenes)
 #print(KNNSequential(4,"foto1.jpg"))
+
+nImagenes = 12000
+path = 'index'
+rtree = path + 'rtreeFile' + str(nImagenes)
+image_indexing(rtree, nImagenes)
+
+# result = KNNRtree(4, "Aaron_Sorkin/Aaron_Sorkin_0001.jpg", 100)
+# print(list(result))
+
