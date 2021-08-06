@@ -16,10 +16,12 @@
       </form>
       
       <div class="images">
-        <img [src]="imgSrc" *ngIf="imgSrc">
-        <img [src]="imgSrc" *ngIf="imgSrc">
+        <img [src]="imgSrc" *ngIf="imgSrc" >
+        <!-- <img [src]="imgSrc" *ngIf="imgSrc"> -->
+        <div *ngIf="name != null">
+          {{this.name}}
+        </div>
       </div>
-
 
     </div>
 

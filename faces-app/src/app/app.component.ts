@@ -11,6 +11,7 @@ export class AppComponent {
   title = 'faces-app';
   imgSrc: string;
   processingImage = false;
+  name: string
 
   uploadForm = this.fb.group({
     file: new FormControl(null, [Validators.required]),
@@ -42,7 +43,7 @@ export class AppComponent {
     this.processingImage = true;
     this.uploadService.uploadImage(this.uploadForm.value).subscribe(
       (res) => {
-        console.log(res);
+        this.name = res.name
         this.processingImage = false;
       },
       (err) => {

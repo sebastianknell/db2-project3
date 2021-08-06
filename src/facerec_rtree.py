@@ -4,12 +4,13 @@ import numpy as np
 from rtree import index
 import os
 
+path = "./data/faces"
+
 def image_indexing(rtree_name, n_images):
   import os
   from rtree import index
 
   # Image collection folder path
-  path = "./data/faces"
   dirList = os.listdir(path)
 
   # Rtree index properties
@@ -69,12 +70,10 @@ def image_indexing(rtree_name, n_images):
 
 # -------------------------------------------------------------------------------------------
 
-path = 'src/Test'
 imagesList = os.listdir(path)
 
 def encode(unencodedQuery):
-    path = 'src/Test'
-    image = fr.load_image_file(path + '/' + unencodedQuery)
+    image = fr.load_image_file(unencodedQuery)
     return fr.face_encodings(image)[0]
 
 def encodeRtree(unencoded):
@@ -84,7 +83,6 @@ def encodeRtree(unencoded):
 
 def KNNSequential(k, query):
     encodedQuery = encode(query)
-    path = 'src/Test'
     dirList = os.listdir(path)
 
     count = 0
@@ -116,10 +114,8 @@ def KNNSequential(k, query):
 
 
 def KNNRtree(k, query, n):
-    path = 'index'
-    rtree = path + 'rtreeFile' + str(n)
-
-    encodedQuery = encodeRtree(query)
+    rtree = 'RtreeIndexFile' + str(n)
+    encodedQuery = encode(query)
     prop = index.Property()
     prop.dimension = 128
     prop.buffering_capacity = 10
@@ -128,15 +124,14 @@ def KNNRtree(k, query, n):
 
     for elem in encodedQuery:
         queryList.append(elem)
-    
     return rtreeIndex.nearest(coordinates=queryList, num_results=k, objects='raw')
 
-# result = KNNRtree(2, "foto1.jpg", 4)
-# print(list(result))
 
-# NImagenes = 100
-# path = "index"
-# rtreeName = path + 'rtreeFile' + str(NImagenes)
-
+NImagenes = 2000
+# rtreeName = 'RtreeIndexFile' + str(NImagenes)
 # FacesRtree = image_indexing(rtreeName, NImagenes)
+
+# result = list(KNNRtree(4, './data/saved/adam-sandler-test.jpeg', NImagenes))
+# print(result[0]['name'])
+
 # print(KNNSequential(4,"foto1.jpg"))
