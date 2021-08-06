@@ -9,7 +9,11 @@ def image_indexing(rtree_name, n_images):
   from rtree import index
 
   # Image collection folder path
+<<<<<<< HEAD:facerec_rtree.py
   path = "src/data"
+=======
+  path = "./data/faces"
+>>>>>>> 0cf4961a38bfc878e88afc1a961e2b9e7a7ab18e:src/facerec_rtree.py
   dirList = os.listdir(path)
 
   # Rtree index properties
@@ -49,7 +53,11 @@ def image_indexing(rtree_name, n_images):
         for coord in face:
           tempCoords.append(coord)
 
+<<<<<<< HEAD:facerec_rtree.py
         format = {"path": folderPath, "name": file};
+=======
+        format = {"path": folderPath, "name": filename}
+>>>>>>> 0cf4961a38bfc878e88afc1a961e2b9e7a7ab18e:src/facerec_rtree.py
 
         rtreeIndex.insert(index, tempCoords, format)
         imagesList.append((index, imagePath))
@@ -135,6 +143,7 @@ def KNNRtree(k, query, n):
 
 # result = KNNRtree(2, "foto1.jpg", 4)
 # print(list(result))
+<<<<<<< HEAD:facerec_rtree.py
 
 
 
@@ -150,3 +159,12 @@ image_indexing(rtree, nImagenes)
 # result = KNNRtree(4, "Aaron_Sorkin/Aaron_Sorkin_0001.jpg", 100)
 # print(list(result))
 
+=======
+
+# NImagenes = 100
+# path = "index"
+# rtreeName = path + 'rtreeFile' + str(NImagenes)
+
+# FacesRtree = image_indexing(rtreeName, NImagenes)
+# print(KNNSequential(4,"foto1.jpg"))
+>>>>>>> 0cf4961a38bfc878e88afc1a961e2b9e7a7ab18e:src/facerec_rtree.py
