@@ -1,63 +1,146 @@
-def image_processing(rtree_name, n_images):
-  from rtree import index
-  import face_recognition
+import face_recognition as fr
+import heapq
+import numpy as np
+from rtree import index
+import os
+
+def image_indexing(rtree_name, n_images):
   import os
+  from rtree import index
 
   # Image collection folder path
-  path = "src\data"
+  path = "src\Test"
   dirList = os.listdir(path)
 
+  # Rtree index properties
   prop = index.Property()
   prop.dimension = 128 #D
   prop.buffering_capacity = 10 #M
-  rtreeIndex = index.Index(rtree_name, properties = p) #r-tree filename
+  rtreeIndex = index.Index(rtree_name, properties = prop) #r-tree filename
 
+  # Variables de apoyo
   index = 0
   breakUtility = False
   imagesList = []
 
   # Iterate over all person folders in collection
-  for file_path in dirList:
-    path_tmp = path + "/" + file_path
-
-    imgList = os.listdir(path_tmp)
+  for filePath in dirList:
+    folderPath = path + "/" + filePath
+    imgList = os.listdir(folderPath)
     
     # Iterate over all images inside folder
-    for file_name in imgList: 
-      path_tmp2 = path_tmp + "/" + file_name
-      img = face_recognition.load_image_file(path_tmp2)
+    for filename in imgList: 
+      imagePath = folderPath + "/" + filename
+      img = fr.load_image_file(imagePath)
 
     # Get encodings for all faces in current image
-      unknown_face_encodings = face_recognition.face_encodings(img)
+      faceEncodings = fr.face_encodings(img)
 
-      for elem in unknown_face_encodings:
+      # Para cada cara en la imagen
+      for face in faceEncodings:
 
         # MAX Images  
         if index == n_images:
-          break_fg = True
+          breakUtility = True
           break
 
-        coor_tmp = list(elem)
-        for coor_i in elem:
-          coor_tmp.append(coor_i)
-        tmp_obj = {"path": path_tmp, "name": file_name};
-        rtreeIndex.insert(index, coor_tmp, tmp_obj)
-        imagesList.append((index, path_tmp2))
+        tempCoords = list(face)
+
+        for coord in face:
+          tempCoords.append(coord)
+
+        format = {"path": folderPath, "name": filename};
+
+        rtreeIndex.insert(index, tempCoords, format)
+        imagesList.append((index, imagePath))
+
         index = index + 1
         
-      if break_fg:
+      if breakUtility:
         break
 
-    if break_fg:
+    if breakUtility:
       break    
   rtreeIndex.close()
 
-  print(str(index) + " images processed")
-  
+  print(str(index) + " images were processed.")
+
   return rtreeIndex
 
-NImagenes = 100
-path = "test"
-rtreeName = path + 'rtreeFile' + str(NImagenes)
+# -------------------------------------------------------------------------------------------
 
-FacesRtree = image_processing(rtreeName, NImagenes)
+path = 'src/Test'
+imagesList = os.listdir(path)
+
+def encode(unencodedQuery):
+    path = 'src/Test'
+    image = fr.load_image_file(path + '/' + unencodedQuery)
+    return fr.face_encodings(image)[0]
+
+def encodeRtree(unencoded):
+    path = 'src/Test'
+    image = fr.load_image_file(path + '/' + unencoded)
+    return fr.face_encodings(image)[0]
+
+def KNNSequential(k, query):
+    encodedQuery = encode(query)
+    path = 'src/Test'
+    dirList = os.listdir(path)
+
+    count = 0
+    names = []
+    known = []
+
+    for filename in dirList:
+        count += 1
+
+        print("Processing: ", filename)
+        imageFile = path + '/' + filename
+        image = fr.load_image_file(imageFile)
+
+        encodings = fr.face_encodings(image)[0]
+
+        names.append(filename)
+        known.append(encodings)
+    
+    distances = fr.face_distance(known, encodedQuery)
+    result = []
+
+    for i in range(count):
+        result.append((distances[i], names[i]))
+    
+    heapq.heapify(result)
+    return heapq.nsmallest(k, result)
+
+    
+
+
+def KNNRtree(k, query, n):
+    path = 'index'
+    rtree = path + 'rtreeFile' + str(n)
+
+    encodedQuery = encodeRtree(query)
+    prop = index.Property()
+    prop.dimension = 128
+    prop.buffering_capacity = 10
+    rtreeIndex = index.Rtree(rtree, properties=prop)
+    queryList = list(encodedQuery)
+
+    for elem in encodedQuery:
+        queryList.append(elem)
+    
+    return rtreeIndex.nearest(coordinates=queryList, num_results=k, objects='raw')
+
+result = KNNRtree(2, "foto1.jpg", 4)
+print(list(result))
+
+
+
+
+
+# NImagenes = 4
+# path = "index"
+# rtreeName = path + 'rtreeFile' + str(NImagenes)
+
+#FacesRtree = image_indexing(rtreeName, NImagenes)
+#print(KNNSequential(4,"foto1.jpg"))
