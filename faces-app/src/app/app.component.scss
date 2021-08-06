@@ -1,0 +1,17 @@
+form {
+    margin-bottom: 10px;
+}
+
+img  {
+    margin-right: 10px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.images {
+    flex-direction: row;
+    justify-content: space-between;
+}

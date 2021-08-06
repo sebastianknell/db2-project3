@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { NbThemeModule, NbLayoutModule, NbButtonModule, NbIconModule, NbInputModule } from '@nebular/theme';
+import { NbThemeModule, NbLayoutModule, NbButtonModule, NbIconModule, NbInputModule, NbSpinnerModule } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -25,7 +25,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     NbEvaIconsModule,
     NbButtonModule,
     NbIconModule,
-    NbInputModule
+    NbInputModule,
+    NbSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
