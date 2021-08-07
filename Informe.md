@@ -125,6 +125,7 @@ def rangeSearch(k, query):
 ```
 
 ### Análisis y experimentación
+Para analizar los algoritmos de búsqueda usamos el conjunto de datos variando el tamaño de la colección. Como vemos en el gráfico, el KNN-Rtree es mejor porque lo estamos leyendo en disco, mientras que el KNN-Secuencial está en memoria.
 
 Tiempo (s) | KNN-Rtree | KNN-Secuencial | KNN-Secuencial (Memoria)
 ------------ | ------------- | ------------- | -------------
