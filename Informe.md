@@ -13,7 +13,6 @@
     - [Análisis y experimentación](#análisis-y-experimentación)
     - [Aplicación Web](#aplicación-web)
   - [Prueba de uso](#prueba-de-uso)
-  - [Anexos](#anexos)
 
 
 ## Introducción
@@ -149,7 +148,3 @@ Para visualizar los resultados implementamos una pequeña aplicación web usando
 Se adjunta el siguiente video que muestra la funcionalidad de la aplicación.
 
 [DB2 - Proyecto 3 - Funcionalidad de la aplicación](https://drive.google.com/file/d/1SS0O3PAcSOQGlNwARbTqmmsrfI3t6tn4/view?usp=sharing)
-
-## Anexos
-### Solucion a la maldición de la dimensionalidad
-Una solucion para dimensiones muy altas es el 
