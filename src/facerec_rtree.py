@@ -82,14 +82,15 @@ def encodeRtree(unencoded):
     image = fr.load_image_file(path + '/' + unencoded)
     return fr.face_encodings(image)[0]
 
-def KNNSequential(k, query):
-    encodedQuery = encode(query)
+def KNNSequentialIndex(n):
     path = 'src/data'
     dirList = os.listdir(path)
 
     count = 0
     names = []
     known = []
+    raeachedN = False
+
 
     for filepath in dirList:
 
@@ -108,17 +109,26 @@ def KNNSequential(k, query):
 
         names.append(imageFile)
         known.append(encodings)
-    
-    distancesList = fr.face_distance(known, encodedQuery)
-    result = []
 
-    for i in range(count):
-        result.append((distancesList[i], names[i]))
-    
-    heapq.heapify(result)
-    return heapq.nsmallest(k, result)
+        if count == n:
+          raeachedN = True
+          break
 
+      if raeachedN:
+        break
     
+    return (known, names)
+
+
+def SequentialKNN(known, names, query, k):
+  distancesList = fr.face_distance(known, query)
+  result = []
+
+  for i in range(len(known)):
+    result.append((distancesList[i], names[i]))
+
+  heapq.heapify(result)
+  return heapq.nsmallest(k, result)
 
 
 def KNNRtree(k, query, n):
@@ -139,50 +149,23 @@ def KNNRtree(k, query, n):
     
     return rtreeIndex.nearest(coordinates=queryList, num_results=k, objects='raw')
 
-
+def convert(box):
+  return box[:int(len(box)/ 2)]
 
 def rangeSearch(range, query):
-  encodedQuery = encode(query)
-  count = 0
-  known = []
-  names = []
-  breakUtility = False
+  rtree = "indexrtreeFile12000"
+  prop = index.Property()
+  prop.dimension
+  prop.buffering_capacity = 10
+  rtreeIndex = index.Rtree(rtree, properties=prop)
 
-  path = 'src/data'
-  dirList = os.listdir(path)
-  for filePath in dirList:
+  box = [x - range for x in query] + [x + range for x in query]
 
-    folderPath = path + '/' + filePath
-    imgList = os.listdir(folderPath)
-
-    for imageFile in imgList:
-      count += 1
-      print(imageFile)
-      imagePath = folderPath + '/' + imageFile
-
-
-      image = fr.load_image_file(imagePath)
-      encodings = fr.face_encodings(image)[0]
-
-      names.append(imageFile)
-      known.append(encodings)
-      print(count)
-
-      if count >= 100:
-        breakUtility = True
-        break
-
-    if breakUtility:
-      break
+  return [
+    item.id for item in rtreeIndex.intersection(box, objects='raw')
+    if np.linalg.norm(convert(item.bbox) - query) <= range
+  ]
   
-  distanceList = fr.face_distance(known, encodedQuery)
-
-  result = []
-  for i in range(count):
-    if distanceList[i] <= range:
-      result.append((distanceList[i],names[i]))
-
-  return result
 
 
 # result = KNNRtree(2, "foto1.jpg", 4)
@@ -196,5 +179,10 @@ def rangeSearch(range, query):
 # print(KNNSequential(4,"foto1.jpg"))
 
 
-print(KNNSequential(3, "Abdoulaye_Wade/Abdoulaye_Wade_0004.jpg"))
+# print(KNNSequential(3, "Abdoulaye_Wade/Abdoulaye_Wade_0004.jpg", 100))
+
+test = fr.load_image_file("src\data\Aaron_Guiel\Aaron_Guiel_0001.jpg")
+encoding = fr.face_encodings(test)
+
+
 
