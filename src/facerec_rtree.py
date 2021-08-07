@@ -2,7 +2,7 @@ import face_recognition as fr
 import heapq
 import numpy as np
 from rtree import index
-import os
+import os, datetime
 
 path = "./data/faces"
 
@@ -76,45 +76,54 @@ def encode(unencodedQuery):
     image = fr.load_image_file(unencodedQuery)
     return fr.face_encodings(image)[0]
 
-def encodeRtree(unencoded):
-    path = 'src/Test'
-    image = fr.load_image_file(path + '/' + unencoded)
-    return fr.face_encodings(image)[0]
 
-def KNNSequential(k, query):
+def KNNSequential(k, query, n):
     encodedQuery = encode(query)
     dirList = os.listdir(path)
 
     count = 0
     names = []
     known = []
+    shouldBreak = False
 
-    for filename in dirList:
+    for filepath in dirList:
+
+      folderPath = path + '/' + filepath
+      imageList = os.listdir(folderPath)
+
+
+      for imageFile in imageList:
         count += 1
+        imagePath = folderPath + '/' + imageFile
 
-        print("Processing: ", filename)
-        imageFile = path + '/' + filename
-        image = fr.load_image_file(imageFile)
+        #processing this image
+        # print(imageFile)
 
-        encodings = fr.face_encodings(image)[0]
-
-        names.append(filename)
-        known.append(encodings)
+        image = fr.load_image_file(imagePath)
+        encodings = fr.face_encodings(image)
+        if encodings:
+          names.append(imageFile)
+          known.append(encodings[0])
+        
+        if count == n - 1:
+          shouldBreak = True
+          break
     
-    distances = fr.face_distance(known, encodedQuery)
+      if shouldBreak:
+        break
+
+    distancesList = fr.face_distance(known, encodedQuery)
     result = []
 
     for i in range(count):
-        result.append((distances[i], names[i]))
-    
+        result.append((distancesList[i], names[i]))
+
     heapq.heapify(result)
     return heapq.nsmallest(k, result)
 
     
-
-
 def KNNRtree(k, query, n):
-    rtree = 'RtreeIndexFile' + str(n)
+    rtree = 'RtreeIndexFile12000'
     encodedQuery = encode(query)
     prop = index.Property()
     prop.dimension = 128
@@ -127,11 +136,75 @@ def KNNRtree(k, query, n):
     return rtreeIndex.nearest(coordinates=queryList, num_results=k, objects='raw')
 
 
-NImagenes = 2000
 # rtreeName = 'RtreeIndexFile' + str(NImagenes)
 # FacesRtree = image_indexing(rtreeName, NImagenes)
 
 # result = list(KNNRtree(4, './data/saved/adam-sandler-test.jpeg', NImagenes))
 # print(result[0]['name'])
 
-# print(KNNSequential(4,"foto1.jpg"))
+# ----TESTS----
+
+N = 100
+print(N)
+start = datetime.datetime.now()
+print(KNNRtree(4, "./data/saved/adam-sandler-test.jpeg", N))
+print(datetime.datetime.now() - start)
+start = datetime.datetime.now()
+print(KNNSequential(4, "./data/saved/adam-sandler-test.jpeg", N))
+print(datetime.datetime.now() - start)
+N = 200
+print(N)
+start = datetime.datetime.now()
+print(KNNRtree(4, "./data/saved/adam-sandler-test.jpeg", N))
+print(datetime.datetime.now() - start)
+start = datetime.datetime.now()
+print(KNNSequential(4, "./data/saved/adam-sandler-test.jpeg", N))
+print(datetime.datetime.now() - start)
+N = 400
+print(N)
+start = datetime.datetime.now()
+print(KNNRtree(4, "./data/saved/adam-sandler-test.jpeg", N))
+print(datetime.datetime.now() - start)
+start = datetime.datetime.now()
+print(KNNSequential(4, "./data/saved/adam-sandler-test.jpeg", N))
+print(datetime.datetime.now() - start)
+N = 800
+print(N)
+start = datetime.datetime.now()
+print(KNNRtree(4, "./data/saved/adam-sandler-test.jpeg", N))
+print(datetime.datetime.now() - start)
+start = datetime.datetime.now()
+print(KNNSequential(4, "./data/saved/adam-sandler-test.jpeg", N))
+print(datetime.datetime.now() - start)
+N = 1600
+print(N)
+start = datetime.datetime.now()
+print(KNNRtree(4, "./data/saved/adam-sandler-test.jpeg", N))
+print(datetime.datetime.now() - start)
+start = datetime.datetime.now()
+print(KNNSequential(4, "./data/saved/adam-sandler-test.jpeg", N))
+print(datetime.datetime.now() - start)
+N = 3200
+print(N)
+start = datetime.datetime.now()
+print(KNNRtree(4, "./data/saved/adam-sandler-test.jpeg", N))
+print(datetime.datetime.now() - start)
+start = datetime.datetime.now()
+print(KNNSequential(4, "./data/saved/adam-sandler-test.jpeg", N))
+print(datetime.datetime.now() - start)
+N = 6400
+print(N)
+start = datetime.datetime.now()
+print(KNNRtree(4, "./data/saved/adam-sandler-test.jpeg", N))
+print(datetime.datetime.now() - start)
+start = datetime.datetime.now()
+print(KNNSequential(4, "./data/saved/adam-sandler-test.jpeg", N))
+print(datetime.datetime.now() - start)
+N = 12000
+print(N)
+start = datetime.datetime.now()
+print(KNNRtree(4, "./data/saved/adam-sandler-test.jpeg", N))
+print(datetime.datetime.now() - start)
+start = datetime.datetime.now()
+print(KNNSequential(4, "./data/saved/adam-sandler-test.jpeg", N))
+print(datetime.datetime.now() - start)
