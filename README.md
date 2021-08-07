@@ -3,3 +3,5 @@
 - Sebastian Knell Noriega 
 - Massimo Imparato Conetta
 - Anthony Guimarey Saavedra
+
+[Informe](./Informe.md)
