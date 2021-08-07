@@ -77,6 +77,44 @@ def encode(unencodedQuery):
     return fr.face_encodings(image)[0]
 
 
+def KNNSequentialIndex(n):
+    path = 'src/data'
+    dirList = os.listdir(path)
+
+    count = 0
+    names = []
+    known = []
+    raeachedN = False
+
+
+    for filepath in dirList:
+
+      folderPath = path + '/' + filepath
+      imageList = os.listdir(folderPath)
+
+      for imageFile in imageList:
+        count += 1
+        imagePath = folderPath + '/' + imageFile
+
+        #processing this image
+        print(imageFile)
+
+        image = fr.load_image_file(imagePath)
+        encodings = fr.face_encodings(image)[0]
+
+        names.append(imageFile)
+        known.append(encodings)
+
+        if count == n:
+          raeachedN = True
+          break
+
+      if raeachedN:
+        break
+    
+    return (known, names)
+
+
 def SequentialKNN(known, names, query, k):
   distancesList = fr.face_distance(known, query)
   result = []
@@ -193,3 +231,9 @@ print(datetime.datetime.now() - start)
 start = datetime.datetime.now()
 print(KNNSequential(4, "./data/saved/adam-sandler-test.jpeg", N))
 print(datetime.datetime.now() - start)
+
+
+(known, names) = KNNSequentialIndex(N)
+test = fr.load_image_file("src/data/Abdullah/Abdullah_0002.jpg")
+query = fr.face_encodings(test)
+SequentialKNN(known, names, test, 4)
