@@ -18,15 +18,15 @@
 
 ## Introducción
 El objetivo de este proyecto fue implementar un servicio web para la identificación automática de personas a partir de una colección grande de imágenes de rostros. 
-Esta enfocado en la construcción optima de una estructura multidimensional para dar soporte a las búsquedas y recuperación eficiente de imágenes. Para ello hacemos uso de la libreria [Face Recognition](https://github.com/ageitgey/face_recognition). En dicha librería ya se encuentra implementado las técnicas necesarias para obtener de cada imagen una representación numérica y compacta (enconding). Se usará una colección de referencia con más de 13 mil imágenes de rostros de personas, disponible en el [siguiente enlace](http://vis-www.cs.umass.edu/lfw/).
+Está enfocado en la construcción optima de una estructura multidimensional para dar soporte a las búsquedas y recuperación eficiente de imágenes. Para ello hacemos uso de la libreria [Face Recognition](https://github.com/ageitgey/face_recognition). En dicha librería ya se encuentra implementado las técnicas necesarias para obtener de cada imagen una representación numérica y compacta (enconding). Se usará una colección de referencia con más de 13 mil imágenes de rostros de personas, disponible en el [siguiente enlace](http://vis-www.cs.umass.edu/lfw/).
 
 
 ## Implementación
 ### Construcción del índice Rtree
-Para construir el índice Rtree, se uso la libreria [Rtree](https://pypi.org/project/Rtree/) de python, que provee los metodos necesarios para que indexemos nuestros vectores caracteristicos.
+Para construir el índice Rtree, se usó la librería [Rtree](https://pypi.org/project/Rtree/) de python, que provee los métodos necesarios para que indexemos nuestros vectores característicos.
 
 ### Algoritmo de búsqueda KNN
-La busqueda KNN nos retorna los K elementos más cercanos. En ese sentido, utilizamos este tipo de busqueda para retornar las imagenes que son las K más similares al objeto de consulta.
+La búsqueda KNN nos retorna los K elementos más cercanos. En ese sentido, utilizamos este tipo de búsqueda para retornar las imágenes que son las K más similares al objeto de consulta.
 
 #### KNN-Rtree
 ```python
@@ -79,6 +79,36 @@ def KNNSequential(k, query):
 ### Algoritmo de búsqueda por Rango
 La busqueda por rango nos retorna 0 o más elementos, pues el resultado depende del radio establecido.
 
+```python
+def rangeSearch(k, query):
+    '''encodedQuery = encode(query)
+    dirList = os.listdir(path)
+
+    count = 0
+    names = []
+    known = []
+
+    for filename in dirList:
+        count += 1
+
+        print("Processing: ", filename)
+        imageFile = path + '/' + filename
+        image = fr.load_image_file(imageFile)
+
+        encodings = fr.face_encodings(image)[0]
+
+        names.append(filename)
+        known.append(encodings)
+    
+    distances = fr.face_distance(known, encodedQuery)
+    result = []
+
+    for i in range(count):
+        result.append((distances[i], names[i]))
+    
+    heapq.heapify(result)
+    return heapq.nsmallest(k, result)'''
+```
 
 ### Análisis y experimentación
 
