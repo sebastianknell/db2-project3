@@ -18,7 +18,7 @@
           </form>
           <nb-select placeholder="Method" [(selected)]="method">
             <nb-option value="0">KNN</nb-option>
-            <nb-option value="1">Range</nb-option>
+            <!-- <nb-option value="1">Range</nb-option> -->
           </nb-select>
           <input *ngIf="method == '0'" nbInput placeholder="Number of results" [(ngModel)]="numResults">
         </nb-card-body>
