@@ -23,15 +23,61 @@ Esta enfocado en la construcción optima de una estructura multidimensional para
 
 ## Implementación
 ### Construcción del índice Rtree
-Para construir el índice Rtree ...
-
+Para construir el índice Rtree, se uso la libreria [Rtree](https://pypi.org/project/Rtree/) de python, que provee los metodos necesarios para que indexemos nuestros vectores caracteristicos.
 
 ### Algoritmo de búsqueda KNN
+La busqueda KNN nos retorna los K elementos más cercanos. En ese sentido, utilizamos este tipo de busqueda para retornar las imagenes que son las K más similares al objeto de consulta.
 
+#### KNN-Rtree
+```python
+def KNNRtree(k, query, n):
+    rtree = 'RtreeIndexFile' + str(n)
+    encodedQuery = encode(query)
+    prop = index.Property()
+    prop.dimension = 128
+    prop.buffering_capacity = 10
+    rtreeIndex = index.Rtree(rtree, properties=prop)
+    queryList = list(encodedQuery)
 
+    for elem in encodedQuery:
+        queryList.append(elem)
+    return rtreeIndex.nearest(coordinates=queryList, num_results=k, objects='raw')
+```
+
+#### KNN-Secuencial
+```python
+def KNNSequential(k, query):
+    encodedQuery = encode(query)
+    dirList = os.listdir(path)
+
+    count = 0
+    names = []
+    known = []
+
+    for filename in dirList:
+        count += 1
+
+        print("Processing: ", filename)
+        imageFile = path + '/' + filename
+        image = fr.load_image_file(imageFile)
+
+        encodings = fr.face_encodings(image)[0]
+
+        names.append(filename)
+        known.append(encodings)
+    
+    distances = fr.face_distance(known, encodedQuery)
+    result = []
+
+    for i in range(count):
+        result.append((distances[i], names[i]))
+    
+    heapq.heapify(result)
+    return heapq.nsmallest(k, result)
+```
 
 ### Algoritmo de búsqueda por Rango
-
+La busqueda por rango nos retorna 0 o más elementos, pues el resultado depende del radio establecido.
 
 
 ### Análisis y experimentación
@@ -59,3 +105,5 @@ Se adjunta el siguiente video que muestra la funcionalidad de la aplicación.
 [DB2 - Proyecto 3 - Funcionalidad de la aplicación]()
 
 ## Anexos
+### Solucion a la maldición de la dimensionalidad
+Una solucion para dimensiones muy altas es el 
