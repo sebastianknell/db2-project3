@@ -2,7 +2,7 @@ from os import path
 from flask import Flask, Response, request, send_file
 from flask import request
 from flask_cors import CORS
-from facerec_rtree import KNNRtree
+from facerec_rtree import KNNRtree, encode
 import base64, json, os
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
@@ -35,8 +35,8 @@ def upload_image():
         f.write(file)
     fileCount += 1
     # Process image
-    result = list(KNNRtree(int(numResults), filename, 2000))
-
+    result = list(KNNRtree(int(numResults), encode(filename), 2000))
+    print(result)
     msg = []
     for r in result:
         path = os.path.join(r['path'], r['name'])

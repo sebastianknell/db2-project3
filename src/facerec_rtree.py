@@ -121,7 +121,7 @@ def KNNSequential(known, names, query, k, n):
 
     
 def KNNRtree(k, encodedQuery, n):
-    rtree = 'RtreeIndexFile12000'
+    rtree = 'RtreeIndexFile'
     prop = index.Property()
     prop.dimension = 128
     prop.buffering_capacity = 10
@@ -134,7 +134,7 @@ def KNNRtree(k, encodedQuery, n):
 
 
 # rtreeName = 'RtreeIndexFile' + str(NImagenes)
-# FacesRtree = image_indexing(rtreeName, NImagenes)
+FacesRtree = image_indexing('RtreeIndexFile', 13000)
 
 # result = list(KNNRtree(4, './data/saved/adam-sandler-test.jpeg', NImagenes))
 # print(result[0]['name'])
