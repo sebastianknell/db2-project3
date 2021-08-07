@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UploadService } from './upload.service';
+import { ImageResult } from './image-result'
 
 @Component({
   selector: 'app-root',
@@ -12,8 +13,12 @@ export class AppComponent {
   imgSrc: string;
   processingImage = false;
   name: string
+  images: ImageResult[]
+  numResults: string
+  method = '0'
 
   uploadForm = this.fb.group({
+    results: new FormControl(null, [Validators.required]),
     file: new FormControl(null, [Validators.required]),
   });
 
@@ -21,6 +26,10 @@ export class AppComponent {
 
   get uf() {
     return this.uploadForm.controls;
+  }
+
+  getImageData(encoded: string) {
+    return 'data:image/jpg;base64,' + encoded;
   }
 
   onImageChange(event) {
@@ -41,10 +50,14 @@ export class AppComponent {
 
   upload() {
     this.processingImage = true;
+    this.uploadForm.patchValue({
+      results: this.numResults ? this.numResults : '1'
+    })
     this.uploadService.uploadImage(this.uploadForm.value).subscribe(
       (res) => {
-        this.name = res.name
         this.processingImage = false;
+        this.images = res;
+        console.log(this.images[0])
       },
       (err) => {
         this.processingImage = false;

@@ -7,19 +7,30 @@
 
     <div class="container">
 
-      <form [formGroup]="uploadForm" novalidate (ngSubmit)="upload()">
-        <input type="file" (change)="onImageChange($event)"/>
-        <button [nbSpinner]="processingImage" nbSpinnerStatus="warning" nbButton status="warning" type="submit" [disabled]="processingImage">
-          <nb-icon icon="cloud-upload-outline"></nb-icon>
-          Process Image
-        </button>
-      </form>
+      <nb-card class="row">
+        <nb-card-body>
+          <form [formGroup]="uploadForm" novalidate (ngSubmit)="upload()">
+            <input type="file" (change)="onImageChange($event)"/>
+            <button [nbSpinner]="processingImage" nbSpinnerStatus="warning" nbButton status="warning" type="submit" [disabled]="processingImage">
+              <nb-icon icon="cloud-upload-outline"></nb-icon>
+              Process Image
+            </button>
+          </form>
+          <nb-select placeholder="Method" [(selected)]="method">
+            <nb-option value="0">KNN</nb-option>
+            <nb-option value="1">Range</nb-option>
+          </nb-select>
+          <input *ngIf="method == '0'" nbInput placeholder="Number of results" [(ngModel)]="numResults">
+        </nb-card-body>
+      </nb-card>
       
       <div class="images">
-        <img [src]="imgSrc" *ngIf="imgSrc" style="width: 300px; height: 500px;">
-        <!-- <img [src]="imgSrc" *ngIf="imgSrc"> -->
-        <div *ngIf="name != null">
-          {{this.name}}
+        <img [src]="imgSrc" *ngIf="imgSrc" style="max-width: 400px; max-height: 600px;">
+        <div *ngIf="images">
+          <div *ngFor="let i of images">
+            <p>{{i.name}}</p>
+            <img [src]="getImageData(i.image)">
+          </div>
         </div>
       </div>
 
