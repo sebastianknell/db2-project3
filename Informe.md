@@ -143,6 +143,7 @@ Valor de K = 8
 ### Aplicación web
 Para visualizar los resultados implementamos una pequeña aplicación web usando [Flask](https://flask.palletsprojects.com/en/2.0.x/#) para el servidor y [Angular](https://angular.io/) para el front. A continuación se muestra la interfaz.
 
+![](ui.png)
 
 ## Prueba de uso
 Se adjunta el siguiente video que muestra la funcionalidad de la aplicación.
