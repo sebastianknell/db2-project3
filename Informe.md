@@ -46,32 +46,47 @@ def KNNRtree(k, query, n):
 
 #### KNN-Secuencial
 ```python
-def KNNSequential(k, query):
+def KNNSequential(k, query, n):
     encodedQuery = encode(query)
     dirList = os.listdir(path)
 
     count = 0
     names = []
     known = []
+    shouldBreak = False
 
-    for filename in dirList:
+    for filepath in dirList:
+
+      folderPath = path + '/' + filepath
+      imageList = os.listdir(folderPath)
+
+
+      for imageFile in imageList:
         count += 1
+        imagePath = folderPath + '/' + imageFile
 
-        print("Processing: ", filename)
-        imageFile = path + '/' + filename
-        image = fr.load_image_file(imageFile)
+        #processing this image
+        # print(imageFile)
 
-        encodings = fr.face_encodings(image)[0]
-
-        names.append(filename)
-        known.append(encodings)
+        image = fr.load_image_file(imagePath)
+        encodings = fr.face_encodings(image)
+        if encodings:
+          names.append(imageFile)
+          known.append(encodings[0])
+        
+        if count == n - 1:
+          shouldBreak = True
+          break
     
-    distances = fr.face_distance(known, encodedQuery)
+      if shouldBreak:
+        break
+
+    distancesList = fr.face_distance(known, encodedQuery)
     result = []
 
     for i in range(count):
-        result.append((distances[i], names[i]))
-    
+        result.append((distancesList[i], names[i]))
+
     heapq.heapify(result)
     return heapq.nsmallest(k, result)
 ```
