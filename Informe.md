@@ -127,16 +127,16 @@ def rangeSearch(k, query):
 
 ### Análisis y experimentación
 
-Tiempo | KNN-Rtree | KNN-Secuencial
+Tiempo (s) | KNN-Rtree | KNN-Secuencial
 ------------ | ------------- | -------------
-N=100 | aaa | aaa
-N=200 | aaa | aaa
-N=400 | aaa | aaa
-N=800 | aaa | aaa
-N=1600 | aaa | aaa
-N=3200 | aaa | aaa
-N=6400 | aaa | aaa
-N=12800 | aaa | aaa
+N=100 | 1.03 | aaa
+N=200 | 0.64 | aaa
+N=400 | 0.60 | aaa
+N=800 | 0.78 | aaa
+N=1600 | 1.06 | aaa
+N=3200 | 1.53 | aaa
+N=6400 | 1.02 | aaa
+N=12800 | 0.97 | aaa
 
 Valor de K = 8
 
