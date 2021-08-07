@@ -234,6 +234,6 @@ print(datetime.datetime.now() - start)
 
 
 (known, names) = KNNSequentialIndex(N)
-test = fr.load_image_file("src/data/Abdullah/Abdullah_0002.jpg")
+test = fr.load_image_file("./data/faces/Abdullah/Abdullah_0002.jpg")
 query = fr.face_encodings(test)
 SequentialKNN(known, names, test, 4)
