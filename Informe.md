@@ -84,7 +84,7 @@ def KNNSequential(k, query, n):
     distancesList = fr.face_distance(known, encodedQuery)
     result = []
 
-    for i in range(count):
+    for i in range(len(distancesList)):
         result.append((distancesList[i], names[i]))
 
     heapq.heapify(result)
