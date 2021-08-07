@@ -77,49 +77,34 @@ def encode(unencodedQuery):
     return fr.face_encodings(image)[0]
 
 
-def KNNSequential(k, query, n):
-    encodedQuery = encode(query)
-    dirList = os.listdir(path)
+def SequentialKNN(known, names, query, k):
+  distancesList = fr.face_distance(known, query)
+  result = []
 
-    count = 0
-    names = []
-    known = []
-    shouldBreak = False
+  for i in range(len(known)):
+    result.append((distancesList[i], names[i]))
 
-    for filepath in dirList:
-
-      folderPath = path + '/' + filepath
-      imageList = os.listdir(folderPath)
+  heapq.heapify(result)
+  return heapq.nsmallest(k, result)
 
 
-      for imageFile in imageList:
-        count += 1
-        imagePath = folderPath + '/' + imageFile
+def KNNRtree(k, query, n):
+    path = 'index'
+    rtree = path + 'rtreeFile' + str(n)
 
-        #processing this image
-        # print(imageFile)
+    encodedQuery = encodeRtree(query)
 
-        image = fr.load_image_file(imagePath)
-        encodings = fr.face_encodings(image)
-        if encodings:
-          names.append(imageFile)
-          known.append(encodings[0])
-        
-        if count == n - 1:
-          shouldBreak = True
-          break
+    prop = index.Property()
+    prop.dimension = 128
+    prop.buffering_capacity = 10
     
-      if shouldBreak:
-        break
+    rtreeIndex = index.Rtree(rtree, properties=prop)
+    queryList = list(encodedQuery)
 
-    distancesList = fr.face_distance(known, encodedQuery)
-    result = []
-
-    for i in range(len(distancesList)):
-        result.append((distancesList[i], names[i]))
-
-    heapq.heapify(result)
-    return heapq.nsmallest(k, result)
+    for elem in encodedQuery:
+        queryList.append(elem)
+    
+    return rtreeIndex.nearest(coordinates=queryList, num_results=k, objects='raw')
 
     
 def KNNRtree(k, query, n):
