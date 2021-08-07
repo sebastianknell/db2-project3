@@ -102,6 +102,9 @@ def KNNSequentialIndex():
         if encodings:
           names.append(imageFile)
           known.append(encodings[0])
+        
+        # if count > 100:
+        #   return (known, names)
     
     return (known, names)
 
@@ -117,9 +120,8 @@ def KNNSequential(known, names, query, k, n):
   return heapq.nsmallest(k, result)
 
     
-def KNNRtree(k, query, n):
+def KNNRtree(k, encodedQuery, n):
     rtree = 'RtreeIndexFile12000'
-    encodedQuery = encode(query)
     prop = index.Property()
     prop.dimension = 128
     prop.buffering_capacity = 10
@@ -145,7 +147,7 @@ query = encode('./data/saved/adam-sandler-test.jpeg')
 N = 100
 print(N)
 start = datetime.datetime.now()
-print(KNNRtree(8, "./data/saved/adam-sandler-test.jpeg", N))
+print(KNNRtree(8, query, N))
 print(datetime.datetime.now() - start)
 start = datetime.datetime.now()
 print(KNNSequential(known, names, query, 8, N))
@@ -153,7 +155,7 @@ print(datetime.datetime.now() - start)
 N = 200
 print(N)
 start = datetime.datetime.now()
-print(KNNRtree(8, "./data/saved/adam-sandler-test.jpeg", N))
+print(KNNRtree(8, query, N))
 print(datetime.datetime.now() - start)
 start = datetime.datetime.now()
 print(KNNSequential(known, names, query, 8, N))
@@ -161,7 +163,7 @@ print(datetime.datetime.now() - start)
 N = 400
 print(N)
 start = datetime.datetime.now()
-print(KNNRtree(8, "./data/saved/adam-sandler-test.jpeg", N))
+print(KNNRtree(8, query, N))
 print(datetime.datetime.now() - start)
 start = datetime.datetime.now()
 print(KNNSequential(known, names, query, 8, N))
@@ -169,7 +171,7 @@ print(datetime.datetime.now() - start)
 N = 800
 print(N)
 start = datetime.datetime.now()
-print(KNNRtree(8, "./data/saved/adam-sandler-test.jpeg", N))
+print(KNNRtree(8, query, N))
 print(datetime.datetime.now() - start)
 start = datetime.datetime.now()
 print(KNNSequential(known, names, query, 8, N))
@@ -177,7 +179,7 @@ print(datetime.datetime.now() - start)
 N = 1600
 print(N)
 start = datetime.datetime.now()
-print(KNNRtree(8, "./data/saved/adam-sandler-test.jpeg", N))
+print(KNNRtree(8, query, N))
 print(datetime.datetime.now() - start)
 start = datetime.datetime.now()
 print(KNNSequential(known, names, query, 8, N))
@@ -185,7 +187,7 @@ print(datetime.datetime.now() - start)
 N = 3200
 print(N)
 start = datetime.datetime.now()
-print(KNNRtree(8, "./data/saved/adam-sandler-test.jpeg", N))
+print(KNNRtree(8, query, N))
 print(datetime.datetime.now() - start)
 start = datetime.datetime.now()
 print(KNNSequential(known, names, query, 8, N))
@@ -193,7 +195,7 @@ print(datetime.datetime.now() - start)
 N = 6400
 print(N)
 start = datetime.datetime.now()
-print(KNNRtree(8, "./data/saved/adam-sandler-test.jpeg", N))
+print(KNNRtree(8, query, N))
 print(datetime.datetime.now() - start)
 start = datetime.datetime.now()
 print(KNNSequential(known, names, query, 8, N))
@@ -201,7 +203,7 @@ print(datetime.datetime.now() - start)
 N = 12000
 print(N)
 start = datetime.datetime.now()
-print(KNNRtree(8, "./data/saved/adam-sandler-test.jpeg", N))
+print(KNNRtree(8, query, N))
 print(datetime.datetime.now() - start)
 start = datetime.datetime.now()
 print(KNNSequential(known, names, query, 8, N))
